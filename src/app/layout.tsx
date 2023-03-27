@@ -14,7 +14,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={inter.className}>
-      <body className="min-h-screen bg-slate-50 dark:bg-slate-900 antialiased">
+      <body className="min-h-screen bg-slate-50 antialiased">
         <Providers>
           <Toaster position="bottom-right" />
           <div className="relative p-4 flex min-h-screen">
