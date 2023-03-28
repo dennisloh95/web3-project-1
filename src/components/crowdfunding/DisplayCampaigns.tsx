@@ -20,7 +20,7 @@ const DisplayCampaigns: FC<DisplayCampaignsProps> = ({
       <h2 className="text-lg font-semibold text-slate-500 mb-5">
         {title} ({campaigns.length})
       </h2>
-      <div className="grid md:grid-cols-2 lg:grid-cols-4">
+      <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-5">
         {isLoading && <div>loading</div>}
         {!isLoading && campaigns.length === 0 && <div>No Campaigns</div>}
         {!isLoading &&

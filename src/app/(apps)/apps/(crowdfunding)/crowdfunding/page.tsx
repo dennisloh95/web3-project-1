@@ -26,19 +26,8 @@ const tabItems = [
 ];
 
 const Crowdfunding = () => {
-  const { isConnected } = useAccount();
   const [selectedIndex, setSelectedIndex] = useState(0);
   const { campaigns, isLoading } = useGetCampaigns();
-
-  useEffect(() => {
-    if (!isConnected) {
-      toast({
-        title: "Connect to wallet to use the app",
-        message: "Please check if wallet is connected",
-        type: "error",
-      });
-    }
-  }, [isConnected]);
 
   return (
     <>
@@ -75,7 +64,11 @@ const Crowdfunding = () => {
           <Tab.Panel>
             <CreateCampaign />
           </Tab.Panel>
-          <Tab.Panel>Content 3</Tab.Panel>
+          <Tab.Panel>
+            <div>
+              <h3 className="text-slate-500 font-bold text-lg">Coming Soon</h3>
+            </div>
+          </Tab.Panel>
         </Tab.Panels>
       </Tab.Group>
     </>

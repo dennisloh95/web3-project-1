@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import FormField from "./FormField";
 import { FaCoins } from "react-icons/fa";
 import { Button } from "../Button";
@@ -6,8 +6,13 @@ import {
   CreateCampaignFormType,
   useCreateCampaign,
 } from "@/hooks/crowdfunding";
-import { checkIfImage } from "@/lib/utils";
+import { checkIfImage, shortenAddress } from "@/lib/utils";
 import { toast } from "../toast";
+import { useAccount, useNetwork, useSwitchNetwork } from "wagmi";
+
+const targetedChain = 5001;
+let transactionHash =
+  "0xd1cc6fbf1aae51cece206b9fc5ab47077d6149f004874da63fbb62e4460366fc";
 
 const CreateCampaign = () => {
   const [form, setForm] = useState<CreateCampaignFormType>({
@@ -18,8 +23,46 @@ const CreateCampaign = () => {
     deadline: "",
     image: "",
   });
+  const { createCampaign, isLoading, isSuccess, data } =
+    useCreateCampaign(form);
 
-  const { createCampaign, isLoading, isSuccess } = useCreateCampaign(form);
+  const { isConnected } = useAccount();
+  const { chain } = useNetwork();
+  const { switchNetwork } = useSwitchNetwork({
+    chainId: targetedChain,
+  });
+
+  useEffect(() => {
+    if (!isConnected) {
+      toast({
+        title: "Connect wallet to use the app",
+        message: "Please check if wallet is connected",
+        type: "error",
+      });
+    }
+
+    if (chain?.id !== targetedChain && switchNetwork) {
+      switchNetwork();
+    }
+  }, [chain, isConnected, switchNetwork]);
+
+  useEffect(() => {
+    if (isSuccess) {
+      toast({
+        title: "Create campaign successful!",
+        message: "Your campaign has been created.",
+        type: "success",
+      });
+      setForm({
+        name: "",
+        title: "",
+        description: "",
+        target: "",
+        deadline: "",
+        image: "",
+      });
+    }
+  }, [isSuccess]);
 
   const handleFormFieldChange = (
     fieldName: string,
@@ -28,16 +71,10 @@ const CreateCampaign = () => {
     setForm({ ...form, [fieldName]: e.target.value });
   };
 
-  const handleSubmit = async (e: React.SyntheticEvent) => {
-    e.preventDefault();
-
+  const handlerCreateCampaign = () => {
     checkIfImage(form.image, async (exists) => {
       if (exists) {
-        try {
-          createCampaign?.();
-        } catch (err) {
-          console.log("err: ", err);
-        }
+        createCampaign?.();
       } else {
         toast({
           title: "Invalid image",
@@ -47,6 +84,12 @@ const CreateCampaign = () => {
         setForm({ ...form, image: "" });
       }
     });
+  };
+
+  const handleSubmit = async (e: React.SyntheticEvent) => {
+    e.preventDefault();
+    console.log("submit");
+    handlerCreateCampaign();
   };
 
   return (
@@ -113,7 +156,25 @@ const CreateCampaign = () => {
           handleChange={(e) => handleFormFieldChange("image", e)}
         />
         <div className="flex justify-center items-center mt-[40px] flex-col">
-          <Button isLoading={isLoading}>Submit new campaign</Button>
+          <Button
+            isLoading={isLoading}
+            disabled={!createCampaign || isLoading}
+            type="submit"
+          >
+            {isLoading ? "Creating..." : "Submit new campaign"}
+          </Button>
+          {data?.hash && isLoading && (
+            <span className="mt-3 animate-pulse">
+              Transaction pending on{" "}
+              <a
+                href={`https://explorer.testnet.mantle.xyz/tx/${data.hash}`}
+                target="_blank"
+                className="text-sm underline"
+              >
+                {shortenAddress(data.hash)}
+              </a>
+            </span>
+          )}
         </div>
       </form>
     </div>

@@ -44,20 +44,20 @@ const WalletConnect = () => {
     setWalletAddress(address);
   }, [address]);
 
-  useEffect(() => {
-    if (chain?.id !== 5) {
-      const switchNetworkHandler = async () => {
-        try {
-          await switchNetwork({
-            chainId: 5,
-          });
-        } catch (err) {
-          // console.log(err);
-        }
-      };
-      switchNetworkHandler();
-    }
-  }, [chain]);
+  // useEffect(() => {
+  //   if (chain?.id !== 5) {
+  //     const switchNetworkHandler = async () => {
+  //       try {
+  //         await switchNetwork({
+  //           chainId: 5,
+  //         });
+  //       } catch (err) {
+  //         // console.log(err);
+  //       }
+  //     };
+  //     switchNetworkHandler();
+  //   }
+  // }, [chain]);
 
   return (
     <Button onClick={connectHandler}>

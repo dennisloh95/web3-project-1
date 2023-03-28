@@ -75,7 +75,12 @@ const useCreateCampaign = (props: CreateCampaignFormType) => {
     ],
     enabled: Boolean(address && isConnected && target && image),
   });
-  const { write: createCampaign, data } = useContractWrite(config);
+  const {
+    write: createCampaign,
+    data,
+    isSuccess: isCreateStarted,
+  } = useContractWrite(config);
+
   const { isLoading, isSuccess } = useWaitForTransaction({
     hash: data?.hash,
   });
@@ -88,7 +93,7 @@ const useCreateCampaign = (props: CreateCampaignFormType) => {
     isPrepareError,
   });
 
-  return { createCampaign, isLoading, isSuccess };
+  return { createCampaign, isLoading, isSuccess, isCreateStarted, data };
 };
 
 function useDebounce<T>(value: T, delay?: number): T {
