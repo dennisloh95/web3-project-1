@@ -27,6 +27,10 @@ const Header = () => {
   const mobileNavRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
   const [toggleDrawer, setToggleDrawer] = useState(false);
+  const [dateTime] = useState({
+    desktop: dateDesktop,
+    mobile: dateMobile,
+  });
 
   const handleMobileNavClick = useCallback(
     (e: MouseEvent) => {
@@ -48,8 +52,8 @@ const Header = () => {
   return (
     <CardContainer className="flex md:flex-row mb-8 h-14 gap-6 justify-between items-center">
       <div className="text-sm font-medium text-slate-500">
-        <span className="hidden md:block">{dateDesktop}</span>
-        <span className="md:hidden">{dateMobile}</span>
+        <span className="hidden md:block">{dateTime.desktop}</span>
+        <span className="md:hidden">{dateTime.mobile}</span>
       </div>
       <div className="md:block hidden">
         <WalletConnect />
