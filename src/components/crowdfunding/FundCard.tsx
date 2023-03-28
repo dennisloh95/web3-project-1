@@ -50,7 +50,7 @@ const FundCard: FC<ParseCampaignType> = ({
               by{" "}
               <a
                 target="_blank"
-                href={`https://etherscan.io/address/${owner}`}
+                href={`https://explorer.testnet.mantle.xyz/address/${owner}`}
                 className=" hover:underline"
               >
                 {shortenAddress(owner)}
