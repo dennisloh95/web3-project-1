@@ -37,3 +37,9 @@ export const checkIfImage = (url: string, callback: (val: boolean) => void) => {
   img.onload = () => callback(true);
   img.onerror = () => callback(false);
 };
+
+export const calculateBarPercentage = (goal: number, raisedAmount: number) => {
+  const percentage = Math.round((raisedAmount * 100) / goal);
+
+  return percentage;
+};
