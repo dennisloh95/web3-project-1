@@ -3,7 +3,7 @@
 import ClientOnly from "@/components/ClientOnly";
 import DisplayCampaigns from "@/components/crowdfunding/DisplayCampaigns";
 import { toast } from "@/components/toast";
-import { useGetCampaigns } from "@/hooks/crowdfunding";
+import { useGetCampaigns, useGetUserCampaigns } from "@/hooks/crowdfunding";
 import React, { useEffect, useState } from "react";
 import { useAccount } from "wagmi";
 import { Tab } from "@headlessui/react";
@@ -28,7 +28,7 @@ const tabItems = [
 const Crowdfunding = () => {
   const [selectedIndex, setSelectedIndex] = useState(0);
   const { campaigns, isLoading } = useGetCampaigns();
-
+  const { myCampaigns } = useGetUserCampaigns();
   return (
     <>
       <h1 className="font-bold text-2xl pb-5">Crowdfunding</h1>
@@ -65,9 +65,11 @@ const Crowdfunding = () => {
             <CreateCampaign />
           </Tab.Panel>
           <Tab.Panel>
-            <div>
-              <h3 className="text-slate-500 font-bold text-lg">Coming Soon</h3>
-            </div>
+            <DisplayCampaigns
+              title="My campaigns"
+              campaigns={myCampaigns}
+              isLoading={isLoading}
+            />
           </Tab.Panel>
         </Tab.Panels>
       </Tab.Group>
