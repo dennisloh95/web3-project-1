@@ -46,7 +46,7 @@ const DisplayCampaigns: FC<DisplayCampaignsProps> = ({
       )}
       {!isLoading && campaigns.length === 0 && (
         <div className="flex justify-center items-center">
-          <h3 className="font-bold text-lg text-slate-500">No Campaigns</h3>
+          <h3 className="font-bold text-lg text-slate-500">No Campaign</h3>
         </div>
       )}
       <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-5">
